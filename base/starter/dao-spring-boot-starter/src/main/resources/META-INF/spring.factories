@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.pinyougou.dao.autoconfigure.DaoAutoConfigure,\
+com.pinyougou.dao.autoconfigure.DaoDruidAutoConfigure,\
+com.pinyougou.dao.autoconfigure.DaoMybatisAutoConfigure,\
+com.pinyougou.dao.autoconfigure.DaoPageHelperAutoConfigure

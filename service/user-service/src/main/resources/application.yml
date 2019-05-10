@@ -1,0 +1,12 @@
+server:
+  port: 8091
+dubbo:
+  application:
+    name: user-service
+  protocol:
+    port: 20881
+logging:
+  level: {com.pinyougou.user.impl.dao: debug}
+
+jwt:
+  secret: ^&$5few,[;..dsa*@@$

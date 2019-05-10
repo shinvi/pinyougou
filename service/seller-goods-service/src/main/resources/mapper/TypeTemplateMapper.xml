@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinyougou.sellergoods.impl.dao.TypeTemplateMapper">
+    <resultMap id="BaseMap" type="com.pinyougou.sellergoods.api.pojo.TypeTemplate">
+        <result property="id" column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="name" column="name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="specIds" column="spec_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="brandIds" column="brand_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="customAttributeItems" column="custom_attribute_items" javaType="java.lang.String"
+                jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="list">
+        id,
+        name,
+        spec_ids,
+        brand_ids,
+        custom_attribute_items
+    </sql>
+
+    <select id="countById" resultType="integer">
+        select count(0)
+        from tb_type_template
+        where id = #{id}
+    </select>
+
+    <select id="selectByName" resultMap="BaseMap">
+        select
+        <include refid="list"/>
+        from tb_type_template
+        where name
+        <choose>
+            <when test="name.indexOf('%')>=0">
+                like
+            </when>
+            <otherwise>
+                =
+            </otherwise>
+        </choose>
+        #{name}
+    </select>
+
+    <select id="selectAll" resultMap="BaseMap">
+        select
+        <include refid="list"/>
+        from tb_type_template
+    </select>
+
+    <insert id="insert" parameterType="com.pinyougou.sellergoods.api.pojo.TypeTemplate">
+        insert into tb_type_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="specIds!=null">
+                spec_ids,
+            </if>
+            <if test="brandIds!=null">
+                brand_ids,
+            </if>
+            <if test="customAttributeItems!=null">
+                custom_attribute_items,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="specIds!=null">
+                #{specIds},
+            </if>
+            <if test="brandIds!=null">
+                #{brandIds},
+            </if>
+            <if test="customAttributeItems!=null">
+                #{customAttributeItems},
+            </if>
+        </trim>
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <update id="updateById" parameterType="com.pinyougou.sellergoods.api.pojo.TypeTemplate">
+        update tb_type_template
+        <set>
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="specIds!=null">
+                spec_ids = #{specIds},
+            </if>
+            <if test="brandIds!=null">
+                brand_ids = #{brandIds},
+            </if>
+            <if test="customAttributeItems!=null">
+                custom_attribute_items = #{customAttributeItems},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete
+        from tb_type_template
+        where id = #{id}
+    </delete>
+</mapper>

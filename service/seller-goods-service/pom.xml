@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.pinyougou</groupId>
+        <artifactId>web-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>seller-goods-service</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>商家和商品模块服务提供者</name>
+    <description>可单独部署的商家和商品模块RPC服务提供者</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.pinyougou</groupId>
+            <artifactId>seller-goods-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pinyougou</groupId>
+            <artifactId>dao-spring-boot-starter</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.pinyougou</groupId>
+            <artifactId>rpc-spring-boot-starter</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.promeg</groupId>
+            <artifactId>tinypinyin</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.pinyougou</groupId>
+                <artifactId>dependencies-manager</artifactId>
+                <version>1.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

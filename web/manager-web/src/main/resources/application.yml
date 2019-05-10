@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+dubbo:
+  application:
+    name: manager-web
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  redis:
+    host: 192.168.3.237
+
+

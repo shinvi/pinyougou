@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinyougou.sellergoods.impl.dao.SpecificationMapper">
+    <resultMap id="BaseResultMap" type="com.pinyougou.sellergoods.api.pojo.vo.SpecificationVo">
+        <result property="id" column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="specName" column="spec_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <collection property="options" ofType="com.pinyougou.sellergoods.api.pojo.SpecificationOption">
+            <result property="id" column="oid" javaType="java.lang.Long" jdbcType="BIGINT"/>
+            <result property="optionName" column="option_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <result property="orders" column="orders" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+    <resultMap id="BaseMap" type="com.pinyougou.sellergoods.api.pojo.Specification">
+        <result property="id" column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="specName" column="spec_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="base">
+        id,
+        spec_name
+    </sql>
+
+    <select id="countById" resultType="integer">
+        select count(1)
+        from tb_specification
+        where id = #{id}
+    </select>
+    <select id="countByName" resultType="long">
+        select count(1)
+        from tb_specification
+        where spec_name
+        <choose>
+            <when test="name.indexOf('%')>=0">
+                like
+            </when>
+            <otherwise>
+                =
+            </otherwise>
+        </choose>
+        #{name}
+    </select>
+
+    <select id="countAll" resultType="long">
+        select count(1)
+        from tb_specification
+    </select>
+    <select id="selectByPage" resultMap="BaseResultMap">
+        select s.id,
+               s.spec_name,
+               so.oid,
+               so.option_name,
+               so.orders
+        from (select id,spec_name from tb_specification LIMIT #{pageStart},#{pageSize}) s
+                 left join
+             (select sid,oid,orders,option_name
+              from tb_specification_specoption
+                       left join tb_specification_option on oid = id) so
+             on s.id = so.sid
+    </select>
+
+    <select id="selectByNameNPage" resultMap="BaseResultMap">
+        select s.id,
+        s.spec_name,
+        so.oid,
+        so.option_name,
+        so.orders
+        from (select id,spec_name from tb_specification
+        where spec_name
+        <choose>
+            <when test="name.indexOf('%')>=0">
+                like
+            </when>
+            <otherwise>
+                =
+            </otherwise>
+        </choose>
+        #{name} LIMIT #{pageStart},#{pageSize}) s
+        left join
+        (select sid,oid,orders,option_name
+        from tb_specification_specoption
+        left join tb_specification_option on oid = id) so
+        on s.id = so.sid
+    </select>
+
+    <select id="selectByName" resultMap="BaseMap">
+        select
+        <include refid="base"></include>
+        from tb_specification
+        where spec_name
+        <choose>
+            <when test="name.indexOf('%')>=0">
+                like
+            </when>
+            <otherwise>
+                =
+            </otherwise>
+        </choose>
+        #{name}
+    </select>
+
+    <select id="selectAllWithoutChild" resultMap="BaseMap">
+        select
+        <include refid="base"/>
+        from tb_specification
+    </select>
+
+    <insert id="insert" parameterType="com.pinyougou.sellergoods.api.pojo.vo.SpecificationVo">
+        insert into tb_specification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="specName != null">
+                spec_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="specName != null">
+                #{specName},
+            </if>
+        </trim>
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <update id="updateById" parameterType="com.pinyougou.sellergoods.api.pojo.vo.SpecificationVo">
+        update tb_specification
+        <set>
+            <if test="specName != null">
+                spec_name = #{specName},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete
+        from tb_specification
+        where id = #{id}
+    </delete>
+</mapper>
